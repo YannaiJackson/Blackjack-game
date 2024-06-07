@@ -34,26 +34,13 @@ def total(turn):
     return total
 
 
-# reveal dealer hand
-def RevealDealerHand():
-    if len(dealer_hand) == 3:
-        return dealer_hand[1], dealer_hand[2]
-    elif len(dealer_hand) == 2:
-        return dealer_hand[1]
-    elif len(dealer_hand) == 4:
-        return dealer_hand[1], dealer_hand[2], dealer_hand[3]
-    elif len(dealer_hand) == 5:
-        return dealer_hand[1], dealer_hand[2], dealer_hand[3], dealer_hand[4]
-
-    # game loop (main)
-
-
+# game loop (main)
 for _ in range(2):
     dealCard(player_hand)
     dealCard(dealer_hand)
 
 while playerIn or dealerIn:
-    print(f"the dealers hand is: {RevealDealerHand()} , X")
+    print(f"the dealers hand is: {dealer_hand} , X")
     print(f"your hand is: {player_hand} for a total of: {total(player_hand)}")
     if playerIn:
         StayOrHit = input("1: stay\n2: hit\n")
