@@ -81,4 +81,3 @@ elif 21 - total(dealer_hand) > 21 - total(player_hand):
     print(
         f"\nyou have {player_hand} for a total of {total(player_hand)}, the dealer has {dealer_hand} for a total of {total(dealer_hand)}.")
     print("you have higher hand, YOU WIN!")
-
