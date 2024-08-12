@@ -1,0 +1,8 @@
+
+for the front end modules the cards are in form of "4-C" (this would be the 4 of clubs)
+the backend function should be prepared to accept the cards in this format and also return it in this format
+
+
+backend functions:
+ - deal card (includes removing the card from the deck even though its in a separate function)
+ - 
