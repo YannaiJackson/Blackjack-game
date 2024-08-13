@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { buildNewDeck, dealCard } from './utils/utils';
-import HitButton from './components/HitButton';
 import PlayerHand from './components/PlayerHand';
 import DealerHand from './components/DealerHand';
+import HitButton from './components/HitButton';
+import StandButton from './components/StandButton';
 
 
 /**
@@ -50,6 +51,7 @@ function App() {
   }, [deck]); // Dependency on deck to avoid endless loop
   {console.log(`Remaining deck length: ${deck.length}`)}
 
+
   return (
     <div className="App">
       <h1>BlackJack</h1>
@@ -62,6 +64,8 @@ function App() {
         setDeck={setDeck} 
         setHand={setPlayerHand} 
       />
+
+      <StandButton />
     </div>
   );
 }
