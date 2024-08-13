@@ -15,7 +15,7 @@
  * console.log(deck); 
  * // Output: ["A-C", "2-C", "3-C", ..., "K-S"]
  */
-function buildNewDeck() {
+export function buildNewDeck() {
   const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const suits = ["C", "D", "H", "S"];
   const deck = [];
@@ -30,28 +30,15 @@ function buildNewDeck() {
 }
 
 /**
- * Deals a card from the deck and adds it to the hand.
+ * Deals a card from the deck.
  * 
- * This function randomly selects a card from the deck, adds it to the hand, and removes it from the deck.
- * It throws an error if the deck is empty.
+ * This function randomly selects a card from the deck and returns the card along with the updated deck.
  * 
- * @param {string[]} deck - The array representing the deck of cards from which the card will be dealt.
- * @param {string[]} hand - The array representing the player's hand where the dealt card will be added.
+ * @param {string[]} deck - The current deck of cards.
  * 
- * @throws {Error} Throws an error if the deck is empty.
- * 
- * @returns {void} This function does not return a value.
- * 
- * @example
- * const hand = [];
- * const deck = ["4-C", "K-H", "3-S", "A-D"];
- * dealCardFromDeck(deck, hand);
- * console.log(hand); // Output: ["4-C"] (or another card from the deck)
- * console.log(deck); // Output: ["K-H", "3-S", "A-D"] (or with the dealt card removed)
+ * @returns {{ card: string, updatedDeck: string[] }} An object containing the dealt card and the updated deck.
  */
-function dealCardFromDeck(deck, hand) {
-  console.log("Dealing a card...");
-
+export function dealCard(deck) {
   if (deck.length === 0) {
     throw new Error("Cannot deal a card from an empty deck.");
   }
@@ -60,13 +47,11 @@ function dealCardFromDeck(deck, hand) {
   const randomIndex = Math.floor(Math.random() * deck.length);
   const card = deck[randomIndex];
 
-  // Add the card to the hand
-  hand.push(card);
-
-  console.log(`Removing ${card} from deck...`);
-  
-  // Remove the card from the deck
-  deck.splice(randomIndex, 1);
+  // Return the dealt card and the updated deck
+  return {
+    card,
+    updatedDeck: deck.filter((_, index) => index !== randomIndex)
+  };
 }
 
 /**
@@ -95,7 +80,15 @@ function dealCardFromDeck(deck, hand) {
  * const sumWithAce = calculateSumOfHand(handWithAce);
  * console.log(sumWithAce); // Output: 15 (Ace counted as 11)
  */
-function calculateSumOfHand(hand) {
+export function calculateSumOfHand(hand) {
+  if (!Array.isArray(hand)) {
+    throw new Error("Invalid hand: must be an array.");
+  }
+  
+  if (hand.length === 0) {
+    throw new Error("Invalid hand: cannot be empty.");
+  }
+
   console.log("Calculating the sum of the hand...");
   
   let sum = 0;
@@ -115,19 +108,3 @@ function calculateSumOfHand(hand) {
   return sum;
 }
 
-
-
-
-
-
-
-// Build a deck
-deck = buildNewDeck();
-playerHand = [];
-
-// Deal a card from the deck to the hand
-dealCardFromDeck(deck, playerHand);
-
-// Log the results
-console.log(`Player's hand: ${playerHand} for a total of ${calculateSumOfHand(playerHand)}`);
-console.log("Remaining deck:", deck);
