@@ -5,7 +5,6 @@ import DealerHand from './components/DealerHand';
 import HitButton from './components/HitButton';
 import StandButton from './components/StandButton';
 
-
 /**
  * The main application component for the Blackjack game.
  * 
@@ -16,41 +15,77 @@ import StandButton from './components/StandButton';
  */
 function App() { 
   // Initialize state
-  const [deck, setDeck] = useState(buildNewDeck());
+  const [deck, setDeck] = useState(() => {
+    const newDeck = buildNewDeck() || [];
+    console.info(`Initial deck created with ${newDeck.length} cards.`);
+    return newDeck;
+  });
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
+  const [cardsDealt, setCardsDealt] = useState(false);
 
   /**
-   * Deals two cards from the deck to a given hand setter function.
-   * 
-   * @param {Function} handSetter - The state updater function for the hand.
+   * Deals two cards to the player and two cards to the dealer, then logs the deck and hands.
    */
-  const dealTwoCards = (handSetter) => {
+  const dealInitialCards = () => {
     let currentDeck = [...deck];
-    let newHand = [];
+    let newPlayerHand = [];
+    let newDealerHand = [];
 
+    console.info('Dealing two cards to the player...');
     for (let i = 0; i < 2; i++) {
+      console.info(`Deck length before dealing player card ${i + 1}: ${currentDeck.length}`);
       const { card, updatedDeck } = dealCard(currentDeck);
-      newHand = [...newHand, card];
+      if (!card || !updatedDeck) {
+        console.error('Error: Failed to deal card.');
+        return;
+      }
+      newPlayerHand = [...newPlayerHand, card];
       currentDeck = updatedDeck;
+      console.info(`Player card ${i + 1}:`, card);
+      console.info(`Deck length after dealing player card ${i + 1}: ${currentDeck.length}`);
     }
 
-    handSetter(newHand);
+    console.info('Dealing two cards to the dealer...');
+    for (let i = 0; i < 2; i++) {
+      console.info(`Deck length before dealing dealer card ${i + 1}: ${currentDeck.length}`);
+      const { card, updatedDeck } = dealCard(currentDeck);
+      if (!card || !updatedDeck) {
+        console.error('Error: Failed to deal card.');
+        return;
+      }
+      newDealerHand = [...newDealerHand, card];
+      currentDeck = updatedDeck;
+      console.info(`Dealer card ${i + 1}:`, card);
+      console.info(`Deck length after dealing dealer card ${i + 1}: ${currentDeck.length}`);
+    }
+
+    // Update hands and deck state
+    setPlayerHand(newPlayerHand);
+    setDealerHand(newDealerHand);
     setDeck(currentDeck);
   };
 
   // Effect hook to deal initial cards to player and dealer
   useEffect(() => {
-    // Check if deck is properly initialized
-    if (deck.length === 52) {
-      // Deal cards only if we haven't already
-      {console.log('Dealing cards...')}
-      dealTwoCards(setPlayerHand);
-      dealTwoCards(setDealerHand);
+    if (!cardsDealt) {
+      if (deck.length === 52) {
+        console.info(`Initial deck length: ${deck.length}`);
+        dealInitialCards();
+        setCardsDealt(true);
+      } else {
+        console.error('Deck does not have the correct number of cards.');
+      }
     }
-  }, [deck]); // Dependency on deck to avoid endless loop
-  {console.log(`Remaining deck length: ${deck.length}`)}
+  }, [cardsDealt, deck]); // Dependencies: cardsDealt to run only once and deck to respond to changes
 
+  // Effect hook to log the deck length whenever it changes
+  useEffect(() => {
+    if (deck.length!== 52) {
+      // Log the deck length only if the deck has changed
+      console.info('Updated deck length:', deck.length);
+    }
+    }, [deck]); // This should trigger when deck is updated
 
   return (
     <div className="App">
@@ -65,7 +100,13 @@ function App() {
         setHand={setPlayerHand} 
       />
 
-      <StandButton />
+      <StandButton 
+        deck={deck}
+        setDeck={setDeck} 
+        playerHand={playerHand}
+        dealerHand={dealerHand}
+        setDealerHand={setDealerHand}
+      />
     </div>
   );
 }

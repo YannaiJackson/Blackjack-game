@@ -88,8 +88,6 @@ export function calculateSumOfHand(hand) {
   if (hand.length === 0) {
     throw new Error("Invalid hand: cannot be empty.");
   }
-
-  console.log("Calculating the sum of the hand...");
   
   let sum = 0;
   for (let i = 0; i < hand.length; i++) {
