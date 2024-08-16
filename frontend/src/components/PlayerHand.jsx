@@ -25,7 +25,7 @@ function PlayerHand({ playerHand, setGameOver }) {
 
   return (
     <>
-      <p>Player's Hand: {playerHand.join(', ')}</p>
+      <p>Player's Hand: {playerHand.join(', ')} (Total: {playerHandValue})</p>
     </>
   );
 }

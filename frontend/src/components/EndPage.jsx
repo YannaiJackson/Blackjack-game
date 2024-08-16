@@ -12,9 +12,9 @@ function EndPage({ playerHand, dealerHand }) {
 
   return (
     <div className="EndPage">
-      <h2>Game Over</h2>
-      <p>Player's Hand: {playerHand.join(', ')} (Value: {playerHandValue})</p>
-      <p>Dealer's Hand: {dealerHand.join(', ')} (Value: {dealerHandValue})</p>
+      <h2>End of round</h2>
+      <p>Dealer's Hand: {dealerHand.join(', ')} (Total: {dealerHandValue})</p>
+      <p>Player's Hand: {playerHand.join(', ')} (Total: {playerHandValue})</p>
       <h3>{result}</h3>
       <button>Restart Game</button>
     </div>
