@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { buildNewDeck, dealCard, checkForWinner, calculateSumOfHand } from './utils/utils';
+import { buildNewDeck, dealCard, calculateSumOfHand } from './utils/utils';
 import PlayerHand from './components/PlayerHand';
 import DealerHand from './components/DealerHand';
 import HitButton from './components/HitButton';
-import StandButton from './components/StandButton';
-import EndPage from './components/EndPage'; // Import the EndPage component
+import EndPage from './components/EndPage';
 
 /**
  * The main application component for the Blackjack game.
@@ -97,6 +96,66 @@ function App() {
     }
   }, [deck]);
 
+  /**
+   * Handles the dealer's turn when the player chooses to stand.
+   * Draws cards for the dealer with a delay until the dealer's hand value is at least 17.
+   */
+  const handleStandButton = () => {
+    console.info('Player has chosen to stand.');
+    
+    if (deck.length === 0) {
+      console.error('Error: Deck is empty. Cannot continue the game.');
+      return;
+    }
+
+    const drawCardForDealer = (currentDeck, dealerHandCopy, dealerHandValue) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          if (dealerHandValue >= 17) {
+            resolve({ dealerHandCopy, dealerHandValue });
+            return;
+          }
+
+          console.info('Current deck length before drawing card:', currentDeck.length);
+
+          const { card, updatedDeck } = dealCard(currentDeck);
+
+          if (!card || !updatedDeck) {
+            console.error('Error: Failed to deal card to dealer.');
+            resolve({ dealerHandCopy, dealerHandValue }); // Resolve even if there's an error
+            return;
+          }
+
+          dealerHandCopy = [...dealerHandCopy, card];
+          dealerHandValue = calculateSumOfHand(dealerHandCopy);
+
+          console.info('Dealer draws a card:', card);
+          console.info('Current deck length after drawing card:', updatedDeck.length);
+
+          setDeck(updatedDeck);
+          setDealerHand(dealerHandCopy);
+
+          // Recursively call this function to draw the next card
+          drawCardForDealer(updatedDeck, dealerHandCopy, dealerHandValue).then(resolve);
+        }, 1000); // 1000 ms delay for demonstration
+      });
+    };
+
+    console.info('Starting dealer\'s turn.');
+    
+    let currentDeck = [...deck];
+    let dealerHandCopy = [...dealerHand];
+    let dealerHandValue = calculateSumOfHand(dealerHandCopy);
+
+    drawCardForDealer(currentDeck, dealerHandCopy, dealerHandValue).then(({ dealerHandCopy, dealerHandValue }) => {
+      console.info(`Dealer has finished drawing cards. Final hand: ${dealerHandCopy} for a total of ${dealerHandValue}`);
+      
+      console.info('Dealer\'s turn ended. The game state has been updated.');
+      setGameOver(true);
+      console.info('Game set to over, calculating winner...');
+    });
+  };
+
   return (
     <div className="App">
       <h1>BlackJack</h1>
@@ -112,20 +171,14 @@ function App() {
             setHand={setPlayerHand} 
           />
 
-          <StandButton 
-            deck={deck}
-            setDeck={setDeck} 
-            playerHand={playerHand}
-            dealerHand={dealerHand}
-            setDealerHand={setDealerHand}
-            setGameOver={setGameOver}
-          />
+          <button onClick={handleStandButton}>Stand</button>
+
         </>
       ) : (
         <EndPage
           playerHand={playerHand}
           dealerHand={dealerHand}
-          startNewRound={startNewRound} // Pass startNewRound function to EndPage
+          startNewRound={startNewRound}
         />
       )}
     </div>
