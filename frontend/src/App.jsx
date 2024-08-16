@@ -68,6 +68,19 @@ function App() {
     setDeck(currentDeck);
   };
 
+  /**
+   * Starts a new round by resetting the game state.
+   */
+  const startNewRound = () => {
+    const newDeck = buildNewDeck();
+    if (newDeck) {
+      setDeck(newDeck);
+      setPlayerHand([]);
+      setDealerHand([]);
+      setCardsDealt(false);
+      setGameOver(false);
+    }
+  };
 
   if (!cardsDealt && deck.length === 52) {
     console.info(`Initial deck length: ${deck.length}`);
@@ -77,14 +90,12 @@ function App() {
     console.error('Deck does not have the correct number of cards.');
   }
   
-
   // Effect hook to log the deck length whenever it changes
   useEffect(() => {
     if (deck.length !== 52) {
       console.info('Updated deck length:', deck.length);
     }
   }, [deck]);
-
 
   return (
     <div className="App">
@@ -114,6 +125,7 @@ function App() {
         <EndPage
           playerHand={playerHand}
           dealerHand={dealerHand}
+          startNewRound={startNewRound} // Pass startNewRound function to EndPage
         />
       )}
     </div>

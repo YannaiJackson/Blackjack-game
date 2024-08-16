@@ -123,7 +123,7 @@ export function checkForWinner(playerHandValue, dealerHandValue) {
 
   // Handle busts
   if (playerBusted) {
-    return "Dealer wins";
+    return "Bust! Dealer wins";
   } else if (dealerBusted) {
     return "Player wins";
   }
@@ -132,7 +132,7 @@ export function checkForWinner(playerHandValue, dealerHandValue) {
   if (playerHandValue === BLACKJACK && dealerHandValue === BLACKJACK) {
     return "Push";
   } else if (playerHandValue === BLACKJACK) {
-    return "Player wins";
+    return "BLACKJACK! Player wins";
   } else if (dealerHandValue === BLACKJACK) {
     return "Dealer wins";
   }
