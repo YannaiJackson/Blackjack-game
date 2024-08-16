@@ -8,42 +8,26 @@ import { calculateSumOfHand } from '../utils/utils';
  * @param {Array<string>} props.playerHand - An array of strings representing the player's hand.
  * @returns {JSX.Element} - A JSX element displaying the player's hand and total value.
  */
-function PlayerHand({ playerHand }) {
+function PlayerHand({ playerHand, setGameOver }) {
   // Check if playerHand is an array and has elements
   if (!Array.isArray(playerHand) || playerHand.length === 0) {
-    return (
-      <p>No cards in player's hand.</p>
-    );
+    console.error('No cards in players hand.');
   }
 
   // Calculate the total value of the player's hand
   const total = calculateSumOfHand(playerHand);
-
-  // Determine the game outcome based on the total
-  if (total === 21) {
-    return (
-      <>
-        {console.log(`playerHand: ${playerHand} playerTotal: ${total}`)} {/* For debugging */}
-        <p>Player has a blackjack! You win!</p>
-      </>
-    );
-  } else if (total > 21) {
-    return (
-      <>
-        {console.log(`playerHand: ${playerHand} playerTotal: ${total}`)} {/* For debugging */}
-        <p>Player busts! Dealer wins.</p>
-      </>
-    );
-  } else {
-    // Default display of player's hand and total
-    return (
-      <>
-        {console.log(`playerHand: ${playerHand} playerTotal: ${total}`)} {/* For debugging */}
-        <p>Player's Hand: {playerHand.join(', ')}</p>
-        <p>Total: {total}</p>
-      </>
-    );
+  console.info(`playerHand: ${playerHand} playerTotal: ${total}`)
+  
+  if (total > 21 || total === 21) {
+    setGameOver(true)
+    console.info('Setting game to over due to players hand');
   }
+
+  return (
+    <>
+      <p>Player's Hand: {playerHand.join(', ')}</p>
+    </>
+  );
 }
 
 export default PlayerHand;

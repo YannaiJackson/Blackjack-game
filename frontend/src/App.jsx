@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { buildNewDeck, dealCard } from './utils/utils';
+import { buildNewDeck, dealCard, checkForWinner, calculateSumOfHand } from './utils/utils';
 import PlayerHand from './components/PlayerHand';
 import DealerHand from './components/DealerHand';
 import HitButton from './components/HitButton';
 import StandButton from './components/StandButton';
+import EndPage from './components/EndPage'; // Import the EndPage component
 
 /**
  * The main application component for the Blackjack game.
@@ -23,6 +24,7 @@ function App() {
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
   const [cardsDealt, setCardsDealt] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   /**
    * Deals two cards to the player and two cards to the dealer, then logs the deck and hands.
@@ -66,47 +68,54 @@ function App() {
     setDeck(currentDeck);
   };
 
-  // Effect hook to deal initial cards to player and dealer
-  useEffect(() => {
-    if (!cardsDealt) {
-      if (deck.length === 52) {
-        console.info(`Initial deck length: ${deck.length}`);
-        dealInitialCards();
-        setCardsDealt(true);
-      } else {
-        console.error('Deck does not have the correct number of cards.');
-      }
-    }
-  }, [cardsDealt, deck]); // Dependencies: cardsDealt to run only once and deck to respond to changes
+
+  if (!cardsDealt && deck.length === 52) {
+    console.info(`Initial deck length: ${deck.length}`);
+    dealInitialCards();
+    setCardsDealt(true);
+  } else if (!cardsDealt && deck.length !== 52) {
+    console.error('Deck does not have the correct number of cards.');
+  }
+  
 
   // Effect hook to log the deck length whenever it changes
   useEffect(() => {
-    if (deck.length!== 52) {
-      // Log the deck length only if the deck has changed
+    if (deck.length !== 52) {
       console.info('Updated deck length:', deck.length);
     }
-    }, [deck]); // This should trigger when deck is updated
+  }, [deck]);
+
 
   return (
     <div className="App">
       <h1>BlackJack</h1>
 
-      <DealerHand dealerHand={dealerHand} />
-      <PlayerHand playerHand={playerHand} />
+      {!gameOver ? (
+        <>
+          <DealerHand dealerHand={dealerHand} />
+          <PlayerHand playerHand={playerHand} setGameOver={setGameOver} />
 
-      <HitButton 
-        deck={deck}
-        setDeck={setDeck} 
-        setHand={setPlayerHand} 
-      />
+          <HitButton
+            deck={deck}
+            setDeck={setDeck} 
+            setHand={setPlayerHand} 
+          />
 
-      <StandButton 
-        deck={deck}
-        setDeck={setDeck} 
-        playerHand={playerHand}
-        dealerHand={dealerHand}
-        setDealerHand={setDealerHand}
-      />
+          <StandButton 
+            deck={deck}
+            setDeck={setDeck} 
+            playerHand={playerHand}
+            dealerHand={dealerHand}
+            setDealerHand={setDealerHand}
+            setGameOver={setGameOver}
+          />
+        </>
+      ) : (
+        <EndPage
+          playerHand={playerHand}
+          dealerHand={dealerHand}
+        />
+      )}
     </div>
   );
 }

@@ -11,7 +11,7 @@ import { dealCard, calculateSumOfHand } from '../utils/utils';
  * @param {Array} props.dealerHand - The dealer's hand.
  * @param {Function} props.setDealerHand - Function to update the dealer's hand.
  */
-const StandButton = ({ deck, setDeck, playerHand, dealerHand, setDealerHand }) => {
+const StandButton = ({ deck, setDeck, playerHand, dealerHand, setDealerHand, setGameOver }) => {
     const handleStand = () => {
       console.info('Player has chosen to stand.');
       
@@ -48,10 +48,11 @@ const StandButton = ({ deck, setDeck, playerHand, dealerHand, setDealerHand }) =
   
         console.info(`Dealer has finished drawing cards. Final hand: ${dealerHandCopy} for a total of ${dealerHandValue}`);
         setDeck(currentDeck);
-        setDealerHand(dealerHandCopy);
+        setDealerHand(dealerHandCopy); 
   
-        // Additional logic for game outcome can be added here
         console.info('Dealer\'s turn ended. The game state has been updated.');
+        setGameOver(true);
+        console.info('Game set to over, calculating winner...');
       } catch (error) {
         console.error('An unexpected error occurred during the stand action:', error);
       }

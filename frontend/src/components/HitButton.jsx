@@ -24,7 +24,7 @@ function HitButton({ setHand, deck, setDeck }) {
 
     // Remove the card from the deck
     setDeck(updatedDeck);
-    console.log(`Player hit successfully, remaining deck length: ${deck.length}`);
+    console.log(`Player hit successfully (card: ${card})`);
   };
 
   return (

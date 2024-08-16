@@ -106,3 +106,44 @@ export function calculateSumOfHand(hand) {
   return sum;
 }
 
+/**
+ * Checks for the winner in a Blackjack game based on the hand values of the dealer and player.
+ * 
+ * @param {number} dealerHandValue - The total value of the dealer's hand.
+ * @param {number} playerHandValue - The total value of the player's hand.
+ * @returns {string} - A string indicating the result: "Player wins", "Dealer wins", "Push", or "Player busts" / "Dealer busts".
+ */
+export function checkForWinner(playerHandValue, dealerHandValue) {
+  // Define constants for the game
+  const BLACKJACK = 21;
+  
+  // Determine if either player or dealer busts
+  const playerBusted = playerHandValue > BLACKJACK;
+  const dealerBusted = dealerHandValue > BLACKJACK;
+
+  // Handle busts
+  if (playerBusted) {
+    return "Dealer wins";
+  } else if (dealerBusted) {
+    return "Player wins";
+  }
+
+  // Handle cases where neither busts
+  if (playerHandValue === BLACKJACK && dealerHandValue === BLACKJACK) {
+    return "Push";
+  } else if (playerHandValue === BLACKJACK) {
+    return "Player wins";
+  } else if (dealerHandValue === BLACKJACK) {
+    return "Dealer wins";
+  }
+
+  // Determine the winner based on hand values
+  if (playerHandValue > dealerHandValue) {
+    return "Player wins";
+  } else if (playerHandValue < dealerHandValue) {
+    return "Dealer wins";
+  } else {
+    return "Push";
+  }
+}
+
