@@ -16,13 +16,13 @@
  * // Output: ["A-C", "2-C", "3-C", ..., "K-S"]
  */
 export function buildNewDeck() {
-  const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-  const suits = ["C", "D", "H", "S"];
+  const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"];
+  const suits = ["club", "diamond", "heart", "spade"];
   const deck = [];
 
   for (const suit of suits) {
     for (const value of values) {
-      deck.push(`${value}-${suit}`);
+      deck.push(`${suit}${value}`);
     }
   }
   
@@ -55,30 +55,15 @@ export function dealCard(deck) {
 }
 
 /**
- * Calculates the total value of a hand of playing cards.
+ * Calculates the total value of a hand of cards.
  * 
- * This function computes the sum of a hand of cards based on typical card values:
- * - Face cards (J, Q, K) are worth 10 points each.
- * - Number cards are worth their face value.
- * - Aces (A) can be worth 11 points if it doesn't bust the hand (i.e., total <= 21); otherwise, they are worth 1 point.
+ * This function evaluates a hand of cards where each card is represented by a string with its rank as the last character.
+ * Face cards (`J`, `Q`, `K`, `T` for Ten) are worth 10 points. Aces (`A`) are worth 11 points initially and adjusted to 1 if the total exceeds 21. Numeric cards are worth their face value.
  * 
- * Note: The hand is an array of card strings where each card is represented as a combination of value and suit, e.g., "4-C" or "K-H".
+ * @param {Array<string>} hand - An array of strings representing the player's hand. Each string represents a card with its rank as the last character.
+ * @returns {number} The total value of the hand.
  * 
- * @param {string[]} hand - An array of strings representing the cards in the hand. Each string has the format "value-type", where:
- *   - `value` is the card value ("2"-"10", "J", "Q", "K", "A").
- *   - `type` is the card type/suit ("C", "D", "H", "S").
- * 
- * @returns {number} The total value of the hand based on the card values and rules described.
- * 
- * @example
- * const hand = ["4-C", "K-H", "3-S"];
- * const sum = calculateSumOfHand(hand);
- * console.log(sum); // Output: 17
- * 
- * @example
- * const handWithAce = ["A-D", "9-C", "5-H"];
- * const sumWithAce = calculateSumOfHand(handWithAce);
- * console.log(sumWithAce); // Output: 15 (Ace counted as 11)
+ * @throws {Error} If the input `hand` is not an array or if it is an empty array.
  */
 export function calculateSumOfHand(hand) {
   if (!Array.isArray(hand)) {
@@ -90,19 +75,29 @@ export function calculateSumOfHand(hand) {
   }
   
   let sum = 0;
+  let numberOfAces = 0;
+  
   for (let i = 0; i < hand.length; i++) {
-    let data = hand[i].split("-");
-    let value = data[0];
-    if (value === "J" || value === "Q" || value === "K") {
-      sum += 10;
-    } else if (value != "A") {
-      sum += parseInt(value, 10); // Ensure value is treated as a number
-    } else if (value === "A" && sum <= 10) {
-      sum += 11;
-    } else if (value === "A" && sum > 10) {
-      sum += 1;
+    let card = hand[i];
+    let value = card.slice(-1); // Extract the rank of the card
+    
+    // Determine the value of the card
+    if (value === "J" || value === "Q" || value === "K" || value === "T") {
+      sum += 10; // Face cards and Ten are worth 10 points
+    } else if (value === "A") {
+      numberOfAces += 1; // Count the number of Aces
+      sum += 11; // Initially count each Ace as 11 points
+    } else {
+      sum += parseInt(value, 10); // Convert numeric value to integer and add to sum
     }
   }
+  
+  // Adjust the sum for Aces if necessary
+  while (sum > 21 && numberOfAces > 0) {
+    sum -= 10; // Convert one Ace from 11 points to 1 point
+    numberOfAces -= 1;
+  }
+  
   return sum;
 }
 

@@ -1,0 +1,106 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2e8b57;
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.App {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+h1 {
+    
+    font-size: 6rem;
+    float: top;
+    color: #e9c605;
+    text-align: center;
+}
+
+.dealer-hand, .player-hand {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0; /* Increased space between dealer's hand and player's hand */
+}
+
+/* Card styles */
+.card {
+    width: 100px;
+    height: 150px;
+    margin: 0 5px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    line-height: 150px;
+    font-size: 1.5rem;
+}
+
+.dealer-hand .card {
+    background-color: #f8f8f8; /* Light background for dealer cards */
+}
+
+.player-hand .card {
+    background-color: #ddd; /* Slightly darker background for player cards */
+}
+
+/* Hit Button */
+.hit-button-container {
+    margin: 20px 0;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #4caf50; /* Green button for "Hit" */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+button:disabled {
+    background-color: #a5d6a7; /* Disabled state color */
+    cursor: not-allowed;
+}
+
+/* End Page */
+.end-page {
+    margin-top: 30px;
+}
+
+.end-page h2 {
+    font-size: 2rem;
+    color: #ffd700;
+}
+
+.end-page button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #2196f3; /* Blue button for "Start New Round" */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.end-page button:hover {
+    background-color: #1976d2; /* Darker blue on hover */
+}

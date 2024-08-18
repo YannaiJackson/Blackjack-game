@@ -4,6 +4,8 @@ import PlayerHand from './components/PlayerHand';
 import DealerHand from './components/DealerHand';
 import HitButton from './components/HitButton';
 import EndPage from './components/EndPage';
+import './App.css';
+
 
 /**
  * The main application component for the Blackjack game.
