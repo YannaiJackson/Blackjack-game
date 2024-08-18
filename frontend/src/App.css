@@ -1,106 +1,53 @@
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #2e8b57;
+/* Make sure the body and html elements take up the full viewport height */
+html, body {
     margin: 0;
-    padding: 0;
-    color: #000000;
-    font-size: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-.App {
-    margin: 0;
-    padding: 0;
     height: 100%;
+    width: 100%;
+    overflow: hidden; /* Prevent any scrollbars if content overflows */
+    background-color: #2e8b57; /* Poker table green background */
 }
 
-h1 {
-    
+/* Ensure the App class takes the full viewport height */
+.App {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center content horizontally */
+    height: 100vh; /* Full viewport height */
+    width: 100vw;  /* Full viewport width */
+    position: relative; /* Ensure child elements are positioned relative to this container */
+}
+
+/* Title styling */
+.title {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 6rem;
-    float: top;
-    color: #e9c605;
+    color: goldenrod;
+    font-weight: bold;
     text-align: center;
+    margin: 0;
+    border: 0;
 }
 
-.dealer-hand, .player-hand {
+.game-board {
+    position: absolute; /* Position relative to the App container */
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Translate 50% of the container's width and height away from the center */
+    width: 62%; /* Set the width to 50% of the App container's width */
+    height: 52%; /* Set the height to 50% of the App container's height */
+    background-image: url('./assets/table.jpg');
+    background-size: cover;
+    border-radius: 10px; /* Round the corners */
+    padding: 20px; /* Add some padding around the content */
+    box-shadow: 0 0 15px rgb(0, 0, 0);
+}
+
+/* Styling for hands or other centered content */
+.hands {
     display: flex;
-    justify-content: center;
-    margin: 30px 0; /* Increased space between dealer's hand and player's hand */
-}
-
-/* Card styles */
-.card {
-    width: 100px;
-    height: 150px;
-    margin: 0 5px;
-    background-color: #fff;
-    color: #000;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    line-height: 150px;
-    font-size: 1.5rem;
-}
-
-.dealer-hand .card {
-    background-color: #f8f8f8; /* Light background for dealer cards */
-}
-
-.player-hand .card {
-    background-color: #ddd; /* Slightly darker background for player cards */
-}
-
-/* Hit Button */
-.hit-button-container {
-    margin: 20px 0;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #4caf50; /* Green button for "Hit" */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #45a049; /* Darker green on hover */
-}
-
-button:disabled {
-    background-color: #a5d6a7; /* Disabled state color */
-    cursor: not-allowed;
-}
-
-/* End Page */
-.end-page {
-    margin-top: 30px;
-}
-
-.end-page h2 {
-    font-size: 2rem;
-    color: #ffd700;
-}
-
-.end-page button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #2196f3; /* Blue button for "Start New Round" */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.end-page button:hover {
-    background-color: #1976d2; /* Darker blue on hover */
+    flex-direction: row; /* Stack children horizontally */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    height: 100%; /* Take up remaining height in App */
+    width: 100%;  /* Full width */
 }

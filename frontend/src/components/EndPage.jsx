@@ -23,11 +23,11 @@ function EndPage({ playerHand, dealerHand, startNewRound }) {
 
   return (
     <div className="EndPage">
-      <h2>End of round</h2>
+      <p>End of round...</p>
 
       {/* Dealer's Hand */}
       <div>
-        <h3>Dealer's Hand ({'total of '+dealerTotal}):</h3>
+        <p>Dealer's Hand ({'total of '+dealerTotal}):</p>
         <div>
           {dealerHand.map((card, index) => (
             <img
@@ -42,7 +42,7 @@ function EndPage({ playerHand, dealerHand, startNewRound }) {
 
       {/* Player's Hand */}
       <div>
-        <h3>Player's Hand ({'total of '+playerTotal}):</h3>
+        <p>Player's Hand ({'total of '+playerTotal}):</p>
         <div>
           {playerHand.map((card, index) => (
             <img
@@ -56,7 +56,7 @@ function EndPage({ playerHand, dealerHand, startNewRound }) {
       </div>
 
       {/* Game Result */}
-      <h3>{result}</h3>
+      <p>{result}</p>
       <button onClick={startNewRound}>New Round</button>
     </div>
   );

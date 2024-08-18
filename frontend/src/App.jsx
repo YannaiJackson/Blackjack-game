@@ -160,29 +160,35 @@ function App() {
 
   return (
     <div className="App">
-      <h1>BlackJack</h1>
+      <p className="title">BlackJack</p>
 
-      {!gameOver ? (
-        <>
-          <DealerHand dealerHand={dealerHand} />
-          <PlayerHand playerHand={playerHand} setGameOver={setGameOver} />
+      <div className='game-board'>
+        {!gameOver ? (
+          <>
+            <div className='hands'>
+              <DealerHand dealerHand={dealerHand} />
+              <PlayerHand playerHand={playerHand} setGameOver={setGameOver} />
+            </div>
 
-          <HitButton
-            deck={deck}
-            setDeck={setDeck} 
-            setHand={setPlayerHand} 
+            <div className='buttons'>
+              <HitButton
+                deck={deck}
+                setDeck={setDeck} 
+                setHand={setPlayerHand} 
+              />
+
+              <button onClick={handleStandButton}>Stand</button>
+            </div>
+
+          </>
+        ) : (
+          <EndPage
+            playerHand={playerHand}
+            dealerHand={dealerHand}
+            startNewRound={startNewRound}
           />
-
-          <button onClick={handleStandButton}>Stand</button>
-
-        </>
-      ) : (
-        <EndPage
-          playerHand={playerHand}
-          dealerHand={dealerHand}
-          startNewRound={startNewRound}
-        />
-      )}
+        )}
+      </div>
     </div>
   );
 }
