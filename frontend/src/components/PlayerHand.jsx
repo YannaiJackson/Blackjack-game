@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Box, Typography, Paper } from '@mui/material';
 import { calculateSumOfHand } from '../utils/utils';
 import cardImages from '../assets/cards/exporter';
 import BACK from '../assets/cards/BACK.png';
@@ -31,7 +32,7 @@ function PlayerHand({ playerHand, setGameOver }) {
 
   if (!Array.isArray(playerHand) || playerHand.length === 0) {
     console.error('No cards in player\'s hand.');
-    return <p>No cards in hand.</p>; // Handle empty hand case gracefully
+    return <Typography variant="body1">No cards in hand.</Typography>; // Handle empty hand case gracefully
   }
 
   const total = calculateSumOfHand(playerHand);
@@ -43,23 +44,35 @@ function PlayerHand({ playerHand, setGameOver }) {
   }
 
   return (
-    <>
-      <p>Player's Hand ({'total of '+total}):</p>
-      <div>
+    <Box sx={{ textAlign: 'center', mb: 4 }}>
+      <Typography variant="h6" gutterBottom>
+        Player's Hand (total of {total})
+      </Typography>
+      <Box display="flex" justifyContent="center" flexWrap="wrap">
         {playerHand.map((card, index) => {
           const imageUrl = imageUrls[card] || BACK; // Fallback image if the URL is not found
           console.log('Card:', card, 'Image URL:', imageUrl); // Verify image URL for each card
           return (
-            <img
+            <Paper
               key={index}
-              src={imageUrl}
-              alt={`Card ${card}`}
-              style={{ width: '100px', margin: '5px' }}
+              elevation={3}
+              sx={{
+                width: '100px',
+                height: '150px',
+                m: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundSize: 'cover',
+                backgroundImage: `url(${imageUrl})`,
+                backgroundColor: '#f5f5f5',
+                backgroundRepeat: 'no-repeat',
+              }}
             />
           );
         })}
-      </div>
-    </>
+      </Box>
+    </Box>
   );
 }
 

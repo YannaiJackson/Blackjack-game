@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Box, Typography, Paper } from '@mui/material';
 import { calculateSumOfHand } from '../utils/utils';
 import cardImages from '../assets/cards/exporter';
 import BACK from '../assets/cards/BACK.png';
@@ -32,7 +33,7 @@ function DealerHand({ dealerHand }) {
   // Check if dealerHand is an array and has elements
   if (!Array.isArray(dealerHand) || dealerHand.length === 0) {
     return (
-      <p>No cards in dealer's hand.</p>
+      <Typography variant="body1">No cards in dealer's hand.</Typography>
     );
   }
 
@@ -45,24 +46,39 @@ function DealerHand({ dealerHand }) {
   const total = calculateSumOfHand(dealerHand); 
 
   return (
-    <>
-      <p>Dealer's Hand:</p>
-      <div>
+    <Box sx={{ textAlign: 'center', mb: 4 }}>
+      <Typography variant="h6" gutterBottom>
+        Dealer's Hand
+      </Typography>
+      <Box display="flex" justifyContent="center" flexWrap="wrap">
         {dealerHand.map((card, index) => {
           // Set the first card to BACK, and the rest to their respective image
           const imageUrl = index === 0 ? BACK : (imageUrls[card] || BACK); 
           console.log('Card:', card, 'Image URL:', imageUrl); // Verify image URL for each card
           return (
-            <img
+            <Paper
               key={index}
-              src={imageUrl}
-              alt={`Card ${card}`}
-              style={{ width: '100px', margin: '5px' }}
+              elevation={3}
+              sx={{
+                width: '100px',
+                height: '150px',
+                m: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundSize: 'cover',
+                backgroundImage: `url(${imageUrl})`,
+                backgroundColor: '#f5f5f5',
+                backgroundRepeat: 'no-repeat',
+              }}
             />
           );
         })}
-      </div>
-    </>
+      </Box>
+      <Typography variant="body1" sx={{ mt: 2 }}>
+        Total: {total}
+      </Typography>
+    </Box>
   );
 }
 

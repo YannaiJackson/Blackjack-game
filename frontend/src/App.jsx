@@ -4,7 +4,7 @@ import PlayerHand from "./components/PlayerHand";
 import DealerHand from "./components/DealerHand";
 import HitButton from "./components/HitButton";
 import EndPage from "./components/EndPage";
-import Typography from "@material-ui/core/styles";
+import { Container, Box, Typography, Button } from '@mui/material';
 
 /**
  * The main application component for the Blackjack game.
@@ -182,36 +182,62 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Typography variant="h3">BlackJack</Typography>
+    <Container
+      maxWidth="md"
+      sx={{
+        mt: 4,
+        color: 'white',  
+        p: 2,                 
+        borderRadius: '8px',       
+      }}
+    >
+      <Typography variant="h2" gutterBottom align="center">
+        BlackJack
+      </Typography>
 
-      <div className="game-board">
+      <Box display="flex" flexDirection="column" alignItems="center" mb={4}>
         {!gameOver ? (
           <>
-            <div className="hands">
+            <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
               <DealerHand dealerHand={dealerHand} />
-              <PlayerHand playerHand={playerHand} setGameOver={setGameOver} />
-            </div>
+            </Box>
 
-            <div className="buttons">
+            <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
+              <PlayerHand playerHand={playerHand} setGameOver={setGameOver} />
+            </Box>
+
+            <Box display="flex" justifyContent="center" gap={2} mb={4}>
               <HitButton
                 deck={deck}
                 setDeck={setDeck}
                 setHand={setPlayerHand}
               />
-
-              <button onClick={handleStandButton}>Stand</button>
-            </div>
+              <Button
+                onClick={handleStandButton}
+                variant="contained"
+                sx={{
+                  backgroundColor: 'black', // Custom background color
+                  color: 'white',           // Custom text color
+                  '&:hover': {
+                    backgroundColor: 'darkgrey', // Custom hover background color
+                  },
+                }}
+              >
+                Stand
+              </Button>
+            </Box>
           </>
         ) : (
-          <EndPage
-            playerHand={playerHand}
-            dealerHand={dealerHand}
-            startNewRound={startNewRound}
-          />
+          <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
+            <EndPage
+              playerHand={playerHand}
+              dealerHand={dealerHand}
+              startNewRound={startNewRound}
+            />
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 }
 

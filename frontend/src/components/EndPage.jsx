@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box, Typography, Button, Paper } from '@mui/material';
 import { checkForWinner, calculateSumOfHand } from '../utils/utils';
 import cardImages from '../assets/cards/exporter';
 import BACK from '../assets/cards/BACK.png';
@@ -22,43 +23,79 @@ function EndPage({ playerHand, dealerHand, startNewRound }) {
   const result = checkForWinner(playerTotal, dealerTotal);
 
   return (
-    <div className="EndPage">
-      <p>End of round...</p>
+    <Box sx={{ textAlign: 'center', p: 3, mt: -5 }}>
+      <Typography variant="h5" gutterBottom>
+        End of Round
+      </Typography>
 
       {/* Dealer's Hand */}
-      <div>
-        <p>Dealer's Hand ({'total of '+dealerTotal}):</p>
-        <div>
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Dealer's Hand (total of {dealerTotal})
+        </Typography>
+        <Box display="flex" justifyContent="center" flexWrap="wrap">
           {dealerHand.map((card, index) => (
-            <img
+            <Paper
               key={index}
-              src={cardImages[`${card}.png`] || BACK} // Fallback to BACK image if not found
-              alt={`Card ${card}`}
-              style={{ width: '100px', margin: '5px' }}
+              elevation={3}
+              sx={{
+                width: '100px',
+                height: '150px',
+                m: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundSize: 'cover',
+                backgroundImage: `url(${cardImages[`${card}.png`] || BACK})`,
+                backgroundColor: '#f5f5f5',
+                backgroundRepeat: 'no-repeat',
+              }}
             />
           ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Player's Hand */}
-      <div>
-        <p>Player's Hand ({'total of '+playerTotal}):</p>
-        <div>
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Player's Hand (total of {playerTotal})
+        </Typography>
+        <Box display="flex" justifyContent="center" flexWrap="wrap">
           {playerHand.map((card, index) => (
-            <img
+            <Paper
               key={index}
-              src={cardImages[`${card}.png`] || BACK} // Fallback to BACK image if not found
-              alt={`Card ${card}`}
-              style={{ width: '100px', margin: '5px' }}
+              elevation={3}
+              sx={{
+                width: '100px',
+                height: '150px',
+                m: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundSize: 'cover',
+                backgroundImage: `url(${cardImages[`${card}.png`] || BACK})`,
+                backgroundColor: '#f5f5f5',
+                backgroundRepeat: 'no-repeat',
+              }}
             />
           ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Game Result */}
-      <p>{result}</p>
-      <button onClick={startNewRound}>New Round</button>
-    </div>
+      <Typography variant="h4" gutterBottom>
+        {result}
+      </Typography>
+
+      <Button 
+        variant="contained" 
+        color="primary" 
+        onClick={startNewRound}
+        sx={{ mt: 2 }}
+      >
+        New Round
+      </Button>
+    </Box>
   );
 }
 
