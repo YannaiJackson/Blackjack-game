@@ -46,7 +46,7 @@ function PlayerHand({ playerHand, setGameOver }) {
   return (
     <Box sx={{ textAlign: 'center', mb: 4 }}>
       <Typography variant="h6" gutterBottom>
-        Player's Hand (total of {total})
+        Your Hand (Total: {total})
       </Typography>
       <Box display="flex" justifyContent="center" flexWrap="wrap">
         {playerHand.map((card, index) => {

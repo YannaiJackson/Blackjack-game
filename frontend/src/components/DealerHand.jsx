@@ -75,9 +75,6 @@ function DealerHand({ dealerHand }) {
           );
         })}
       </Box>
-      <Typography variant="body1" sx={{ mt: 2 }}>
-        Total: {total}
-      </Typography>
     </Box>
   );
 }

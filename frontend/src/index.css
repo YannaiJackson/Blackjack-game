@@ -10,13 +10,13 @@
   /* Set a default font family */
   body {
     font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-    background-color: #006400; /* Poker green background for the entire app */
     color: #333; /* Default text color */
   }
   
   /* Ensure that the app container takes full height */
   html, body, #root {
     height: 100%;
+    width: 100%;
     overflow: hidden;
   }
   

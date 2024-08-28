@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { buildNewDeck, dealCard, calculateSumOfHand } from "./utils/utils";
+import { buildNewDeck, dealCard } from "./utils/utils";
 import PlayerHand from "./components/PlayerHand";
 import DealerHand from "./components/DealerHand";
 import HitButton from "./components/HitButton";
 import EndPage from "./components/EndPage";
-import { Container, Box, Typography, Button } from '@mui/material';
+import StandButton from "./components/StandButton"; // Import the StandButton component
+import { Box, Typography } from '@mui/material';
+import borderImage from "./assets/border-image.jpg";
 
 /**
  * The main application component for the Blackjack game.
@@ -105,139 +107,117 @@ function App() {
     }
   }, [deck]);
 
-  /**
-   * Handles the dealer's turn when the player chooses to stand.
-   * Draws cards for the dealer with a delay until the dealer's hand value is at least 17.
-   */
-  const handleStandButton = () => {
-    console.info("Player has chosen to stand.");
-
-    if (deck.length === 0) {
-      console.error("Error: Deck is empty. Cannot continue the game.");
-      return;
-    }
-
-    const drawCardForDealer = (
-      currentDeck,
-      dealerHandCopy,
-      dealerHandValue
-    ) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          if (dealerHandValue >= 17) {
-            resolve({ dealerHandCopy, dealerHandValue });
-            return;
-          }
-
-          console.info(
-            "Current deck length before drawing card:",
-            currentDeck.length
-          );
-
-          const { card, updatedDeck } = dealCard(currentDeck);
-
-          if (!card || !updatedDeck) {
-            console.error("Error: Failed to deal card to dealer.");
-            resolve({ dealerHandCopy, dealerHandValue }); // Resolve even if there's an error
-            return;
-          }
-
-          dealerHandCopy = [...dealerHandCopy, card];
-          dealerHandValue = calculateSumOfHand(dealerHandCopy);
-
-          console.info("Dealer draws a card:", card);
-          console.info(
-            "Current deck length after drawing card:",
-            updatedDeck.length
-          );
-
-          setDeck(updatedDeck);
-          setDealerHand(dealerHandCopy);
-
-          // Recursively call this function to draw the next card
-          drawCardForDealer(updatedDeck, dealerHandCopy, dealerHandValue).then(
-            resolve
-          );
-        }, 1000); // 1000 ms delay for demonstration
-      });
-    };
-
-    console.info("Starting dealer's turn.");
-
-    let currentDeck = [...deck];
-    let dealerHandCopy = [...dealerHand];
-    let dealerHandValue = calculateSumOfHand(dealerHandCopy);
-
-    drawCardForDealer(currentDeck, dealerHandCopy, dealerHandValue).then(
-      ({ dealerHandCopy, dealerHandValue }) => {
-        console.info(
-          `Dealer has finished drawing cards. Final hand: ${dealerHandCopy} for a total of ${dealerHandValue}`
-        );
-
-        console.info("Dealer's turn ended. The game state has been updated.");
-        setGameOver(true);
-        console.info("Game set to over, calculating winner...");
-      }
-    );
-  };
-
   return (
-    <Container
-      maxWidth="md"
+    <Box
       sx={{
-        mt: 4,
-        color: 'white',  
-        p: 2,                 
-        borderRadius: '8px',       
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: '#111C21',
+        color: 'white',
+        padding: 0,
+        margin: 0,
       }}
     >
-      <Typography variant="h2" gutterBottom align="center">
-        BlackJack
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          position: 'absolute',
+          width: '85%',
+          height: '90%',
+          borderRadius: '0 0 550px 550px',
+          backgroundImage: `url(${borderImage})`,
+          justifyContent: 'center',
+          boxShadow: '0 16px 32px rgba(0, 0, 0, 0.75)',
+          border: '6px black solid',
+          borderTop: 'none',
+          zIndex: 2, // Higher zIndex to appear on top of Typography
+        }}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            width: '93%',
+            height: '93%',
+            backgroundColor: '#006400',
+            borderRadius: '0 0 520px 520px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            zIndex: 3, // Higher zIndex to appear on top of Typography
+            mb: 4,
+            border: '5px black solid',
+            borderTop: 'none',
+          }}
+        >
+          <Typography
+            variant="h1"
+            color="gold"
+            fontSize={245}
+            sx={{
+              fontWeight: 'bold',
+              opacity: 0.3,
+              position: 'absolute', // Absolute positioning to place Typography in the background
+              zIndex: -100, // Lower zIndex to appear behind other content
+              mb: 16,
+            }}
+          >
+            BlackJack
+          </Typography>
 
-      <Box display="flex" flexDirection="column" alignItems="center" mb={4}>
-        {!gameOver ? (
-          <>
-            <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
-              <DealerHand dealerHand={dealerHand} />
-            </Box>
+          <Box display="flex" flexDirection="column" alignItems="center" mb={0}>
+            {!gameOver ? (
+              <>
+                <Box display="flex" flexDirection="column" alignItems="center" mb={15}>
+                  <DealerHand dealerHand={dealerHand} />
+                </Box>
 
-            <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
-              <PlayerHand playerHand={playerHand} setGameOver={setGameOver} />
-            </Box>
-
-            <Box display="flex" justifyContent="center" gap={2} mb={4}>
-              <HitButton
-                deck={deck}
-                setDeck={setDeck}
-                setHand={setPlayerHand}
-              />
-              <Button
-                onClick={handleStandButton}
-                variant="contained"
-                sx={{
-                  backgroundColor: 'black', // Custom background color
-                  color: 'white',           // Custom text color
-                  '&:hover': {
-                    backgroundColor: 'darkgrey', // Custom hover background color
-                  },
-                }}
-              >
-                Stand
-              </Button>
-            </Box>
-          </>
-        ) : (
-          <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-            <EndPage
-              playerHand={playerHand}
-              dealerHand={dealerHand}
-              startNewRound={startNewRound}
-            />
+                <Box display="flex" flexDirection="column" alignItems="center" mb={-2}>
+                  <PlayerHand playerHand={playerHand} setGameOver={setGameOver} />
+                </Box>
+              </>
+            ) : (
+              <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
+                <EndPage
+                  playerHand={playerHand}
+                  dealerHand={dealerHand}
+                  startNewRound={startNewRound}
+                />
+              </Box>
+            )}
           </Box>
-        )}
+        </Box>
       </Box>
-    </Container>
+
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 20,
+          right: 20,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 3,
+          zIndex: 4, // Higher zIndex to appear on top of everything
+        }}
+      >
+        <HitButton
+          deck={deck}
+          setDeck={setDeck}
+          setHand={setPlayerHand}
+        />
+
+        <StandButton
+          deck={deck}
+          dealerHand={dealerHand}
+          setDeck={setDeck}
+          setDealerHand={setDealerHand}
+          setGameOver={setGameOver}
+        />
+      </Box>
+    </Box>
   );
 }
 

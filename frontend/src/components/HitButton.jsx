@@ -27,10 +27,15 @@ function HitButton({ setHand, deck, setDeck }) {
       onClick={handleClick}
       variant="contained"
       sx={{
-        backgroundColor: 'black', // Custom background color
+        width: 140,
+        height: 130,
+        fontSize: 20,
+        fontWeight: 'bold',
+        borderRadius: '50%',
+        backgroundColor: 'blue', // Custom background color
         color: 'white',           // Custom text color
         '&:hover': {
-          backgroundColor: 'darkgrey', // Custom hover background color
+          backgroundColor: 'lightBlue', // Custom hover background color
         },
       }}
     >
