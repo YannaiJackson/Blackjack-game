@@ -31,6 +31,7 @@ function HitButton({ setHand, deck, setDeck }) {
         height: 130,
         fontSize: 20,
         fontWeight: 'bold',
+        border: '3px solid black',
         borderRadius: '50%',
         backgroundColor: 'blue', // Custom background color
         color: 'white',           // Custom text color

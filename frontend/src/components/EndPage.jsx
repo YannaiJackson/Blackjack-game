@@ -88,8 +88,8 @@ function EndPage({ playerHand, dealerHand, startNewRound }) {
       </Typography>
 
       <Button 
-        variant="contained" 
-        color="primary" 
+        variant="contained"
+        color="primary"
         onClick={startNewRound}
         sx={{ mt: 2 }}
       >

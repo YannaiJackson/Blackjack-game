@@ -82,6 +82,7 @@ function StandButton({ deck, dealerHand, setDeck, setDealerHand, setGameOver }) 
         height: 130,
         fontSize: 20,
         fontWeight: 'bold',
+        border: '3px solid black',
         borderRadius: '50%',
         backgroundColor: 'red', // Custom background color
         color: 'white',           // Custom text color
